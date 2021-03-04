@@ -1,8 +1,6 @@
 package br.com.cristian.cadastroauluno;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,28 @@ public class Controller {
     }
 
     @GetMapping
-    public List<Alunos> Controller(){
+    public List<Alunos> alunosAlunos(){
         return alunos;
     }
+
+    @PostMapping
+    public Integer add(@RequestBody Alunos aluno){
+        if(aluno.getId()== null){
+            aluno.setId(alunos.size() +1);
+        }
+        alunos.add(aluno);
+        return aluno.getId();
+    }
+
+    @PutMapping
+    public void update(@RequestBody Alunos aluno){
+        alunos.stream().filter(aln -> aln.getId().equals(aluno.getId()))
+                .forEach(aln -> aln.setNome(aluno.getNome()));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Integer id){
+        alunos.removeIf(aln->aln.getId().equals(id));
+    }
+
 }
