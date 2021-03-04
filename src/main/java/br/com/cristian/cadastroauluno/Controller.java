@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/alunos")
@@ -18,8 +19,11 @@ public class Controller {
     }
 
     @GetMapping
-    public List<Alunos> alunosAlunos(){
-        return alunos;
+    public List<Alunos> findAll(@RequestParam(required = false) String aluno){
+        if(aluno != null) {
+            return alunos.stream().filter(aln -> aln.getNome().contains(aluno))
+                    .collect(Collectors.toList());
+        }return alunos;
     }
 
     @PostMapping
