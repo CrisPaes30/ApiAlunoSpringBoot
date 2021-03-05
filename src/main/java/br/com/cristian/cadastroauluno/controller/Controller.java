@@ -1,5 +1,9 @@
-package br.com.cristian.cadastroauluno;
+package br.com.cristian.cadastroauluno.controller;
 
+import br.com.cristian.cadastroauluno.entity.Alunos;
+import jdk.jfr.consumer.RecordedClassLoader;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,24 +30,33 @@ public class Controller {
         }return alunos;
     }
 
+    @GetMapping("/{id}")
+    public Alunos findById(@PathVariable("id") Integer id){
+        return this.alunos.stream().filter(aln -> aln.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     @PostMapping
-    public Integer add(@RequestBody Alunos aluno){
+    public ResponseEntity<Integer> add(@RequestBody Alunos aluno){
         if(aluno.getId()== null){
             aluno.setId(alunos.size() +1);
         }
         alunos.add(aluno);
-        return aluno.getId();
+        return new ResponseEntity<>(aluno.getId(), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public void update(@RequestBody Alunos aluno){
+    public ResponseEntity update(@RequestBody Alunos aluno){
         alunos.stream().filter(aln -> aln.getId().equals(aluno.getId()))
                 .forEach(aln -> aln.setNome(aluno.getNome()));
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Integer id){
+    public ResponseEntity delete(@PathVariable("id") Integer id){
         alunos.removeIf(aln->aln.getId().equals(id));
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }

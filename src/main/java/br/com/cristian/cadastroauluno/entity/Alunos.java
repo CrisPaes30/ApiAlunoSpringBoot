@@ -1,4 +1,4 @@
-package br.com.cristian.cadastroauluno;
+package br.com.cristian.cadastroauluno.entity;
 
 public class Alunos {
 
