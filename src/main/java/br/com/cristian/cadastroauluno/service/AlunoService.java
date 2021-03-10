@@ -1,6 +1,8 @@
 package br.com.cristian.cadastroauluno.service;
 
+import br.com.cristian.cadastroauluno.controller.GenericControllerAdvice;
 import br.com.cristian.cadastroauluno.entity.Alunos;
+import br.com.cristian.cadastroauluno.exceptions.NotFoundExceptions;
 import jdk.jfr.consumer.RecordedClassLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/alunos")
 public class AlunoService {
 
+
     private final List<Alunos> alunos;
 
 
@@ -31,13 +34,17 @@ public class AlunoService {
             return alunos.stream().filter(aln -> aln.getNome().contains(aluno))
                     .collect(Collectors.toList());
         }return alunos;
+
     }
 
+
     @GetMapping("/{id}")
-    public Alunos findById(@PathVariable("id") Integer id){
+    public Alunos findById(@PathVariable("id") String id){
+
         return this.alunos.stream().filter(aln -> aln.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+
     }
 
     @PostMapping

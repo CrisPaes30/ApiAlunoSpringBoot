@@ -1,5 +1,7 @@
 package br.com.cristian.cadastroauluno.entity;
 
+import java.util.Locale;
+
 public class Alunos {
 
     private Integer id;
@@ -35,4 +37,5 @@ public class Alunos {
     public void setIdade(Integer idade) {
         this.idade = idade;
     }
+
 }
