@@ -2,13 +2,13 @@ package br.com.cristian.cadastroauluno.entity;
 
 import java.util.Locale;
 
-public class Alunos {
+public class Aluno {
 
     private Integer id;
     private String nome;
     private Integer idade;
 
-    public Alunos(Integer id, String nome, Integer idade) {
+    public Aluno(Integer id, String nome, Integer idade) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GenericControllerAdvice {
+public class GenericControllerAdvice extends Throwable {
 
     Logger LOGGER = LoggerFactory.getLogger(GenericControllerAdvice.class);
 
     @ExceptionHandler({NotFoundExceptions.class})
     public ResponseEntity<String> handle(final NotFoundExceptions e) {
-        final String recursoInexistente ="Nome ou Id não encontrado";
+        final String recursoInexistente = "Nome ou Id não encontrado";
         LOGGER.error(recursoInexistente);
         return new ResponseEntity<>(recursoInexistente,HttpStatus.NOT_FOUND);
     }

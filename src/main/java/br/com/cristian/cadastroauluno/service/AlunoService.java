@@ -1,16 +1,11 @@
 package br.com.cristian.cadastroauluno.service;
 
-import br.com.cristian.cadastroauluno.controller.GenericControllerAdvice;
-import br.com.cristian.cadastroauluno.entity.Alunos;
+import br.com.cristian.cadastroauluno.entity.Aluno;
 import br.com.cristian.cadastroauluno.exceptions.NotFoundExceptions;
-import jdk.jfr.consumer.RecordedClassLoader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.WebServlet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +15,7 @@ import java.util.stream.Collectors;
 public class AlunoService {
 
 
-    private final List<Alunos> alunos;
+    private final List<Aluno> alunos;
 
 
     public AlunoService() {
@@ -29,7 +24,10 @@ public class AlunoService {
     }
 
     @GetMapping
-    public List<Alunos> findAll(@RequestParam(required = false) String aluno){
+    public List<Aluno> findAll(@RequestParam(required = false) String aluno){
+        if(aluno == null){
+            throw new NotFoundExceptions();
+        }
         if(aluno != null) {
             return alunos.stream().filter(aln -> aln.getNome().contains(aluno))
                     .collect(Collectors.toList());
@@ -39,16 +37,18 @@ public class AlunoService {
 
 
     @GetMapping("/{id}")
-    public Alunos findById(@PathVariable("id") String id){
-
-        return this.alunos.stream().filter(aln -> aln.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-
+    public Aluno findById(@PathVariable("id") String id){
+        if(id != null ){
+            throw new NotFoundExceptions();
+        }else {
+            return this.alunos.stream().filter(aln -> aln.getId().equals(id))
+                    .findFirst()
+                    .orElse(null);
+        }
     }
 
     @PostMapping
-    public ResponseEntity<Integer> add(@RequestBody Alunos aluno){
+    public ResponseEntity<Integer> add(@RequestBody Aluno aluno){
         if(aluno.getId()== null){
             aluno.setId(alunos.size() +1);
         }
@@ -57,7 +57,7 @@ public class AlunoService {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Alunos aluno){
+    public ResponseEntity update(@RequestBody Aluno aluno){
         alunos.stream().filter(aln -> aln.getId().equals(aluno.getId()))
                 .forEach(aln -> aln.setNome(aluno.getNome()));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
